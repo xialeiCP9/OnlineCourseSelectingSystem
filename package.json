@@ -1,0 +1,17 @@
+{
+  "name": "onlinecourseselectingsystem",
+  "version": "1.0.0",
+  "description": "这是一个选修课系统。技术栈：NodeJS、Express、MongoDB、Mongoose、session",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "xialei",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "formidable": "^1.2.1",
+    "node-xlsx": "^0.14.1"
+  }
+}
