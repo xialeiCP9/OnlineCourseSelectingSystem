@@ -55,16 +55,7 @@
     
     <body>
         <div class="layui-fluid">
-          <!-- <form action="/upload" method="post" enctype="multipart/form-data">
-            <p class="upload-file">
-                <input type="file" name="studentFile" accept=".xlsx" />
-                <span class="tip">点击上传Excel文件</span>
-            </p>
-            <p>
-                <input type="submit" name="submit" value="提交" />
-            </p>
-          </form> -->
-          <button type="button" class="layui-btn" id="upload-file">
+          <button type="button" class="layui-btn" id="upload-file" name="excelFile">
             选择上传Excel文件
           </button>
           <button type="button" class="layui-btn layui-btn-radius layui-btn-normal" id="upload">
@@ -90,10 +81,16 @@
                     },
                     done: function(res){
                         //上传完毕回调
-                        console.log(res.result);
-                        //返回学生列表
-                       
-                        xadmin.close(xadmin.lastIndex);
+                        layer.alert("增加成功", {
+                            icon: 6
+                        },
+                        function() {
+                            //关闭当前frame
+                            xadmin.close();
+
+                            // 可以对父窗口进行刷新 
+                            xadmin.father_reload();
+                        });
                     },
                     error: function(){
 
