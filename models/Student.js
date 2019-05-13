@@ -1,23 +1,46 @@
-var sequelize = require("./sequelize.js");
-var Sequelize = require("sequelize");
+var mongoose = require("mongoose");
 
-var Student = sequelize.define("student",{
-	sid: {field: 'sid',type: Sequelize.STRING(50),allowNull: false,primaryKey: true},
-	sname: {field: 'sname',type: Sequelize.STRING(50)},
-	password: {field: 'password',type: Sequelize.STRING(50)},
-	sex: {field: 'sex',type: Sequelize.INTEGER},
-	admissionDate: {field: 'admissionDate',type: Sequelize.DATE},
-	clazz: {field: 'clazz',type: Sequelize.STRING(20)},
-},{timestamps: false});
+//创建schema
+var studentSchema = new mongoose.Schema({
+	"sid"				: String,
+	"sname"				: String,
+	"gender"			: Number,
+	"grade"				: Number,
+	"password"			: String,
+	"isInitialPassword"	: Boolean
+});
 
-//获取页数
-Student.getPage = function(callback){
-	Student.findAll({
-		attributes:[[sequelize.fn(('COUNT'),sequelize.col('sid')),'count']]
-	}).then(result => {
-		callback && callback(result[0].dataValues.count);
+studentSchema.statics.importStudent = function(workSheetsFromFile){
+	var str = "ABDEFGHJKLMNPQRTXYZabdefghjkmnpqrtuwyz123456789#$&_!";
+	//先将原集合删除
+	mongoose.connection.collection("students").drop(function(err){
+		if(err){
+			console.error(err);
+			return;
+		}
+		var len = workSheetsFromFile.length;
+		for(var i = 0 ; i < len ; i++){
+			for(var j = 1 ; j < workSheetsFromFile[i].data.length ; j++){
+				//生成6位密码;
+				var password = "";
+				for(var m = 0 ; m < 6 ; m ++){
+					password += str.charAt(parseInt(str.length * Math.random()));
+				}
+				var s = new Student({
+					"sid" : workSheetsFromFile[i].data[j][0],
+					"sname" : workSheetsFromFile[i].data[j][1],
+					"gender" : workSheetsFromFile[i].data[j][2] == "男" ? 0 : 1,
+					"grade" : i + 1 ,
+					"password" : password,
+					"isInitialPassword"	: true
+				})
+				s.save();
+			}
+		}
 	})
 }
 
+//创建模型
+var Student = mongoose.model("student",studentSchema);
+
 module.exports = Student;
-//增加学生

@@ -16,7 +16,6 @@
         <![endif]-->
     </head>
     <body>
-        <%= students[0].sid %>
         <div class="x-nav">
           <span class="layui-breadcrumb">
             <a href="">首页</a>
@@ -34,7 +33,7 @@
                         <div class="layui-card-header">
                             <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
                             <button class="layui-btn" onclick="xadmin.open('添加用户','/admin/student',600,400)"><i class="layui-icon"></i>添加</button>
-                            <button class="layui-btn" onclick="xadmin.open('导入Excel表','/importStudent.html',600,400)"><i class="layui-icon"></i>Excel表导入</button>
+                            <button class="layui-btn" onclick="xadmin.open('导入Excel表','/admin/student/import',600,400)"><i class="layui-icon"></i>Excel表导入</button>
                         </div>
                         <div class="layui-card-body ">
                             <table class="layui-table layui-form">

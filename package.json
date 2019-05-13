@@ -1,20 +1,28 @@
 {
   "name": "onlinecourseselectingsystem",
   "version": "1.0.0",
-  "description": "这是一个选修课系统。技术栈：NodeJS、Express、MongoDB、Mongoose、session",
-  "main": "index.js",
+  "description": "选修课系统",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xialeiCP9/OnlineCourseSelectingSystem.git"
+  },
   "author": "xialei",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xialeiCP9/OnlineCourseSelectingSystem/issues"
+  },
+  "homepage": "https://github.com/xialeiCP9/OnlineCourseSelectingSystem#readme",
   "dependencies": {
+    "date-format": "^2.0.0",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
+    "express-session": "^1.16.1",
     "formidable": "^1.2.1",
-    "mysql": "^2.17.1",
-    "mysql2": "^1.6.5",
-    "node-xlsx": "^0.14.1",
-    "sequelize": "^5.8.5"
+    "mongoose": "^5.5.7",
+    "node-xlsx": "^0.15.0"
   }
 }
