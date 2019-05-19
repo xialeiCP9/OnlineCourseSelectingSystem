@@ -20,39 +20,79 @@
     <body>
         <div class="layui-fluid">
             <div class="layui-row">
-                <form class="layui-form">
-                    <div class="layui-form-item">
-                        <label for="L_email" class="layui-form-label">
-                            <span class="x-red">*</span>邮箱</label>
-                        <div class="layui-input-inline">
-                            <input type="text" id="L_email" name="email" required="" lay-verify="email" autocomplete="off" class="layui-input"></div>
-                        <div class="layui-form-mid layui-word-aux">
-                            <span class="x-red">*</span>将会成为您唯一的登入名</div></div>
-                    <div class="layui-form-item">
-                        <label for="L_username" class="layui-form-label">
-                            <span class="x-red">*</span>昵称</label>
-                        <div class="layui-input-inline">
-                            <input type="text" id="L_username" name="username" required="" lay-verify="nikename" autocomplete="off" class="layui-input"></div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label for="L_pass" class="layui-form-label">
-                            <span class="x-red">*</span>密码</label>
-                        <div class="layui-input-inline">
-                            <input type="password" id="L_pass" name="pass" required="" lay-verify="pass" autocomplete="off" class="layui-input"></div>
-                        <div class="layui-form-mid layui-word-aux">6到16个字符</div></div>
-                    <div class="layui-form-item">
-                        <label for="L_repass" class="layui-form-label">
-                            <span class="x-red">*</span>确认密码</label>
-                        <div class="layui-input-inline">
-                            <input type="password" id="L_repass" name="repass" required="" lay-verify="repass" autocomplete="off" class="layui-input"></div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label for="L_repass" class="layui-form-label"></label>
-                        <button class="layui-btn" lay-filter="add" lay-submit="">增加</button></div>
-                </form>
+                <div class="layui-card">
+                  <div class="layui-card-header">输入课程信息</div>
+                  <div class="layui-card-body">
+                    <form class="layui-form">
+                        <div class="layui-form-item">
+                            <label for="cid" class="layui-form-label">
+                                <span class="x-red">*</span>编号</label>
+                            <div class="layui-input-inline">
+                                <input type="text" id="cid" name="cid" required="" lay-verify="cid" autocomplete="off" class="layui-input"></div>
+                            <div class="layui-form-mid layui-word-aux">
+                                <span class="x-red">*</span>将会成为课程的唯一id
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label for="cname" class="layui-form-label">
+                                <span class="x-red">*</span>名称</label>
+                            <div class="layui-input-inline">
+                                <input type="text" id="cname" name="cname" required="" lay-verify="required" autocomplete="off" class="layui-input"></div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label for="teacher" class="layui-form-label">
+                                <span class="x-red">*</span>老师</label>
+                            <div class="layui-input-inline">
+                                <input type="text" id="teacher" name="teacher" required="" lay-verify="required" autocomplete="off" class="layui-input"></div>
+                            <div class="layui-form-mid layui-word-aux">
+                                <span class="x-red">*</span>有多个老师时，用分号隔开
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label for="number" class="layui-form-label">
+                                <span class="x-red">*</span>人数</label>
+                            <div class="layui-input-inline">
+                                <input type="text" id="number" name="number" required="" lay-verify="required" autocomplete="off" class="layui-input"></div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">年级</label>
+                            <div class="layui-input-block">
+                              <input type="checkbox" name="allow" title="初一" value="1">
+                              <input type="checkbox" name="allow" title="初二" value="2">
+                              <input type="checkbox" name="allow" title="初三" value="3">
+                              <input type="checkbox" name="allow" title="高一" value="4">
+                              <input type="checkbox" name="allow" title="高二" value="5">
+                              <input type="checkbox" name="allow" title="高三" value="6">
+                            </div>
+                          </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">日期</label>
+                            <div class="layui-input-block">
+                              <select name="dayofweek" lay-verify="required">
+                                <option value="2">周二</option>
+                                <option value="3">周三</option>
+                                <option value="5">周五</option>
+                              </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item layui-form-text">
+                            <label class="layui-form-label">简介</label>
+                            <div class="layui-input-block">
+                              <textarea name="briefintro" placeholder="请输入内容" class="layui-textarea"></textarea>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label for="L_repass" class="layui-form-label"></label>
+                            <button class="layui-btn" lay-filter="add" lay-submit="">增加</button>
+                        </div>
+                    </form>
+                  </div>
+                </div>
+                
             </div>
         </div>
-        <script>layui.use(['form', 'layer','jquery'],
+        <script>
+        layui.use(['form', 'layer','jquery'],
             function() {
                 $ = layui.jquery;
                 var form = layui.form,
@@ -60,44 +100,68 @@
 
                 //自定义验证规则
                 form.verify({
-                    nikename: function(value) {
-                        if (value.length < 5) {
-                            return '昵称至少得5个字符啊';
+                    /*cid: function(value) {
+                        console.log("cid:" + value);
+                        if(!(/^[1-9]([0-9]){8}$/.test(value))){
+                            return "学号必须是9位数字,且首位为1";
                         }
-                    },
-                    pass: [/(.+){6,12}$/, '密码必须6到12位'],
-                    repass: function(value) {
-                        if ($('#L_pass').val() != $('#L_repass').val()) {
-                            return '两次密码不一致';
-                        }
-                    }
+                        var msg = "";
+                        $.ajax({
+                            url: "/course/" + value,
+                            type: "propfind",
+                            async: false,
+                            success: function(result){
+                                console.log(result);
+                                if(result.status == -1){
+                                    msg = "服务器错误"
+                                } else if(result.status >= 1){
+                                    msg = "学号在数据库中已存在";
+                                }
+                            }
+                        });
+                        return msg;
+                    },*/
+                
                 });
 
                 //监听提交
                 form.on('submit(add)',
-                function(data) {
-                    console.log(data);
-                    //发异步，把数据提交给php
-                    layer.alert("增加成功", {
-                        icon: 6
-                    },
-                    function() {
-                        //关闭当前frame
-                        xadmin.close();
+                    function(data) {
+                        console.log("提交数据",data);
+                        var allow = [];
+                        $("input:checkbox[name='allow']:checked").each(function(i){
+                            allow[i] = $(this).val();
+                        })
+                        var postData = {
+                            cid: data.field.cid,
+                            cname: data.field.cname,
+                            dayofweek: data.field.dayofweek,
+                            number: parseInt(data.field.number),
+                            teacher: data.field.teacher,
+                            allow: allow.join(";"),
+                            briefintro: data.field.briefintro
+                        }
+                        $.post({
+                            url: "/course",
+                            data: postData,
+                            success: function(result){
+                                layer.alert(result.msg, {
+                                    icon: result.status == 1 ? 6 : 5
+                                },
+                                function() {
+                                    //关闭当前frame
+                                    xadmin.close();
 
-                        // 可以对父窗口进行刷新 
-                        xadmin.father_reload();
-                    });
+                                    // 可以对父窗口进行刷新 
+                                    xadmin.father_reload();
+                                });
+                            }
+                        });
                     return false;
                 });
 
-            });</script>
-        <script>var _hmt = _hmt || []; (function() {
-                var hm = document.createElement("script");
-                hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
-                var s = document.getElementsByTagName("script")[0];
-                s.parentNode.insertBefore(hm, s);
-            })();</script>
+            });
+        </script>
     </body>
 
 </html>

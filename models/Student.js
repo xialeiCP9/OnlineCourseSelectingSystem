@@ -7,7 +7,8 @@ var studentSchema = new mongoose.Schema({
 	"gender"			: Number,
 	"grade"				: Number,
 	"password"			: String,
-	"isInitialPassword"	: Boolean
+	"isInitialPassword"	: Boolean,
+	"mycourses" 		: [String]
 });
 
 studentSchema.statics.importStudent = function(workSheetsFromFile){

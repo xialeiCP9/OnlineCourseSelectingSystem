@@ -1,0 +1,100 @@
+<!doctype html>
+<html  class="x-admin-sm">
+<head>
+	<meta charset="UTF-8">
+	<title>学生登录</title>
+	<meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="stylesheet" href="/css/font.css">
+    <link rel="stylesheet" href="/css/login.css">
+	  <link rel="stylesheet" href="/css/xadmin.css">
+    <script src="/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/js/xadmin.js"></script>
+    <style>
+      .layui-nav .right{
+        position: absolute;
+        right: 50px;
+      }
+    </style>
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body class="login-bg">
+    <ul class="layui-nav" lay-filter="">
+      <li class="layui-nav-item" lay-unselect><a href="javascript:;">选修课系统</a></li>
+      <li class="layui-nav-item"><a href="/">可选课程</a></li>
+      <li class="layui-nav-item layui-this"><a href="/mycourse">我的选课</a></li>
+      <li class="layui-nav-item right">
+          <a href=""><img src="//t.cn/RCzsdCq" class="layui-nav-img">欢迎,<%= sname %>(<%= sid %>)</a>
+          <dl class="layui-nav-child">
+            <dd><a href="javascript:;" onclick="xadmin.open('修改密码','/changepw',800,500)">修改密码</a></dd>
+            <dd><a href="/logout">退了</a></dd>
+          </dl>
+      </li>
+    </ul>
+    <table class="layui-hide" id="course" lay-filter="course"></table>
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="cancel">退报</a>
+    </script>
+    <!-- 底部结束 -->
+    <script>
+      
+      //注意：导航 依赖 element 模块，否则无法进行功能性操作
+      layui.use(['element','layer','table'], function(){
+        var element = layui.element;
+        var layer = layui.layer;
+        var table = layui.table;
+        var $ = layui.jquery;
+       
+        table.render({
+          elem: '#course',
+          url: '/course?sid=' + <%= sid %>,
+          title: '课程表',
+          height: 700,
+          limit: 15,
+          cols: [[
+            {field: 'cid' , title: '编号' , width: 60 ,unresize: true , sort: true},
+            {field: 'cname' , title: '名称', width: 150},
+            {field: 'teacher' , title: '老师', width: 100},
+            {field: 'dayofweek' , title: '日期' , width: 100 , templet: function(res){
+              var week = ["星期一","星期二","星期三","星期四","星期五","星期六","星期日"];
+              return week[parseInt(res.dayofweek) - 1];
+            }},
+            {field: 'allow' , title: '年级', width: 250 , templet: function(res){
+              var grades = ["初一" , "初二" , "初三" , "高一" , "高二" , "高三"];
+              var result = "";
+              $.each(res.allow,function(i,v){
+                result += grades[v - 1] + ";";
+              });
+              return result;
+            }},
+            {field: 'number' , title: '剩余人数', width: 100},
+            {field: 'briefintro' , title: '简介'},
+            {field: 'right' , title: '报名' , width: 100 , toolbar:'#barDemo' }
+          ]],
+          page: true
+        });
+
+        table.on('tool(course)',function(obj){
+           if(obj.event == 'cancel'){
+            $.post({
+              url: '/cancel',
+              data: {cid: obj.data.cid},
+              success: function(res){
+                layer.msg(res.msg,{
+                  time: 1000
+                },function(){
+                  window.location.reload();
+                })
+              }
+            })
+          }
+        });
+      });
+    </script>
+</body>
+</html>

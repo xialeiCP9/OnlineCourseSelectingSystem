@@ -218,7 +218,7 @@
               }
             })
           });
-          //监听性别操作
+          //监听班级操作
           form.on('select(gradeDemo)', function(obj){
             var grades = {"初一": 1 , "初二": 2 , "初三": 3 , "高一": 4 , "高二": 5 , "高三": 6 }
             var sid = obj.value , key = obj.elem.name;
@@ -248,7 +248,8 @@
               where: {
                 sname: data.field.sname,
                 sid: data.field.sid,
-                grade: data.field.grade
+                grade: data.field.grade,
+                page: 1
               }
             });
             return false;

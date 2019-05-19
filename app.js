@@ -1,6 +1,9 @@
 var express = require("express");
 var mongoose = require("mongoose");
+var mainCtrl = require("./controllers/mainCtrl.js");
 var adminCtrl = require("./controllers/adminCtrl.js");
+var adminStudentCtrl = require("./controllers/adminStudentCtrl.js");
+var adminCourseCtrl = require("./controllers/adminCourseCtrl.js");
 var session = require("express-session");
 var app = express();
 
@@ -9,7 +12,7 @@ mongoose.connect("mongodb://localhost/OnlineCourseSelectingSystem");
 //使用session
 app.use(session({
 	secret: 'xialei',
-	cookie: {maxAge: 60000 },
+	cookie: {maxAge: 60 * 24 * 60 * 1000 },
 	resave: false,
 	saveUninitialized: true
 }));
@@ -20,33 +23,54 @@ app.set("view engine","ejs");
 //路由请单
 app.get("/admin",adminCtrl.showAdminDashBoard);
 app.get("/admin/welcome",adminCtrl.showAdminWelcome);
-app.get("/admin/course",adminCtrl.showAdminCourse);
-app.get("/admin/student",adminCtrl.showAdminStudent);
+app.get("/admin/course",adminCourseCtrl.showAdminCourse);
+app.get("/admin/student",adminStudentCtrl.showAdminStudent);
 
 //导入学生
-app.get("/admin/student/import",adminCtrl.showAdminStudentImport);
-app.post("/admin/student/import",adminCtrl.doAdminStudentImport);
+app.get("/admin/student/import",adminStudentCtrl.showAdminStudentImport);
+app.post("/admin/student/import",adminStudentCtrl.doAdminStudentImport);
 //下载学生表格
-app.get("/admin/student/download",adminCtrl.downloadStudentXlsx)
+app.get("/admin/student/download",adminStudentCtrl.downloadStudentXlsx)
 
 //获取所有学生
-app.get("/student",adminCtrl.getAllStudent);
-app.post("/student/:sid",adminCtrl.updateStudent);
-app.propfind("/student/:sid",adminCtrl.checkStudentExit);
+app.get("/student",adminStudentCtrl.getAllStudent);
+app.post("/student/:sid",adminStudentCtrl.updateStudent);
+app.propfind("/student/:sid",adminStudentCtrl.checkStudentExit);
 
 //增加学生
-app.get("/admin/student/add",adminCtrl.showAdminAddStudent);
-app.post("/student",adminCtrl.addStudent);
+app.get("/admin/student/add",adminStudentCtrl.showAdminAddStudent);
+app.post("/student",adminStudentCtrl.addStudent);
 //删除学生
-app.delete("/student",adminCtrl.delStudent);
+app.delete("/student",adminStudentCtrl.delStudent);
 
-/*app.get("/admin/students/:page",mainCtrl.showAdminStudents);
-app.get("/admin/student",mainCtrl.showAdminStudent);
-app.get("/admin/student/:sid",mainCtrl.getAdminStudent);
-app.delete("/admin/student/:sid",mainCtrl.delAdminStudent);
-app.get("/admin/courses",mainCtrl.showAdminCourses);
-app.post("/admin/upload",mainCtrl.doAdminUpload);
-app.post("/admin/student",mainCtrl.addAdminStudent);*/
+/**
+*	课程
+*/
+app.get("/admin/course/import",adminCourseCtrl.showAdminCourseImport);
+app.get("/admin/course/add",adminCourseCtrl.showAdminAddCourse);
+app.post("/admin/course/import",adminCourseCtrl.doAdminCourseImport);
+app.get("/course",adminCourseCtrl.getAllCourse);
+//更新课程信息
+app.post("/course/:cid",adminCourseCtrl.updateCourse);
+app.post("/course",adminCourseCtrl.addCourse);
+//删除课程
+app.delete("/course",adminCourseCtrl.delCourse);
+
+//前台页面
+app.get("/login",mainCtrl.showLogin);
+app.post("/login",mainCtrl.doLogin);
+app.get("/logout",mainCtrl.doLogout);
+//报名界面
+app.get("/",mainCtrl.showTable);
+//修改密码
+app.get("/changepw",mainCtrl.showChangepw);
+app.post("/changepw",mainCtrl.doChangepw);
+//报名
+app.post("/apply",mainCtrl.applyCourse);
+app.post("/cancel",mainCtrl.cancelCourse);
+
+//我的选课表
+app.get("/mycourse",mainCtrl.showMyCourse);
 
 //静态文件
 app.use(express.static("public"));
